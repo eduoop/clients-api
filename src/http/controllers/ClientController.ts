@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import z from "zod";
-import Client from "../services/Client";
+import Client, { IndexClients } from "../services/Client";
 import { PrismaClient } from "@prisma/client";
 import ClientSchema from "../../schemas/Client";
 import { formatCPF } from "../../utils/formateCpf";
@@ -69,6 +69,17 @@ export default {
       } else {
         res.status(500).json({ message: "Erro interno do servidor" });
       }
+    }
+  },
+
+  index: async (req: Request, res: Response) => {
+    const data = await req.query;
+
+    try {
+      const resData = await Client.index(data as IndexClients);
+      return res.status(200).json(resData);
+    } catch {
+      res.status(500).json({ message: "Erro ao buscar clientes" });
     }
   },
 };

@@ -21,9 +21,11 @@ interface UpdateClientInput {
   phones?: string[];
 }
 
-interface IndexClients {
+export interface IndexClients {
   name?: string;
   cpf?: string;
+  email?: string;
+  maritalStatus?: "SINGLE" | "MARRIED" | "DIVORCED" | "WIDOWED";
 }
 
 const prisma = new PrismaClient();
@@ -104,11 +106,23 @@ const update = async ({
   return updatedClient;
 };
 
-const index = async ({ name, cpf }: IndexClients) => {};
+const index = async ({ cpf, email, maritalStatus, name }: IndexClients) => {
+  const where: any = {};
+
+  if (name) where.name = { contains: name };
+  if (cpf) where.cpf = formatCPF(cpf);
+  if (email) where.email = email;
+  if (maritalStatus) where.maritalStatus = maritalStatus;
+
+  const clients = await prisma.client.findMany({ where });
+
+  return clients;
+};
 
 const Client = {
   create,
   update,
+  index,
 };
 
 export default Client;
