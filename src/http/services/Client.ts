@@ -21,12 +21,8 @@ interface UpdateClientInput {
   phones?: string[];
 }
 
-export interface IndexClients {
-  name?: string;
-  cpf?: string;
-  email?: string;
-  maritalStatus?: "SINGLE" | "MARRIED" | "DIVORCED" | "WIDOWED";
-}
+export interface IndexClients
+  extends Pick<UpdateClientInput, "name" | "cpf" | "email" | "maritalStatus"> {}
 
 const prisma = new PrismaClient();
 
