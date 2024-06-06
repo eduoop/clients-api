@@ -37,7 +37,7 @@ export const update = z.object({
     .string()
     .refine((value) => cpf.isValid(value), { message: "CPF inválido" })
     .optional(),
-  name: z.string().optional(),
+  name: z.string().min(2).optional(),
   email: z.string().email().optional(),
   maritalStatus: z.nativeEnum(MaritalStatus).optional(),
   address: z
