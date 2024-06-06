@@ -4,6 +4,13 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+}
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +18,32 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Client {
+  id            Int           @id @default(autoincrement())
+  cpf           String        @unique
+  email         String
+  maritalStatus MaritalStatus
+  address       Address?      @relation(fields: [addressId], references: [id])
+  addressId     Int?          @unique
+  phones        Phone[]
+}
+
+model Address {
+  id       Int     @id @default(autoincrement())
+  country  String
+  state    String
+  city     String
+  district String
+  street   String
+  number   String
+  client   Client?
+}
+
+model Phone {
+  id       Int    @id @default(autoincrement())
+  number   String
+  clientId Int
+  client   Client @relation(fields: [clientId], references: [id])
 }
