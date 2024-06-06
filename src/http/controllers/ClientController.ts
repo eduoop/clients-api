@@ -3,6 +3,7 @@ import z from "zod";
 import Client from "../services/Client";
 import { PrismaClient } from "@prisma/client";
 import ClientSchema from "../../schemas/Client";
+import { formatCPF } from "../../utils/formateCpf";
 
 const prisma = new PrismaClient();
 
@@ -10,7 +11,7 @@ export default {
   create: async (req: Request, res: Response) => {
     const exitingClient = await prisma.client.findUnique({
       where: {
-        cpf: req.body.cpf,
+        cpf: formatCPF(req.body.cpf),
       },
       include: {
         address: true,
@@ -39,11 +40,11 @@ export default {
   },
 
   update: async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id);
+    const cpf = formatCPF(req.params.cpf);
 
     const existingClient = await prisma.client.findUnique({
       where: {
-        id: id,
+        cpf: cpf,
       },
       include: {
         address: true,
@@ -57,9 +58,9 @@ export default {
 
     try {
       const updateData = ClientSchema.update.parse(req.body);
-      const updatedClient = await Client.update({ id, ...updateData });
+      const updatedClient = await Client.update({ cpf, ...updateData });
       return res.status(200).json(updatedClient);
-    }  catch (error) {
+    } catch (error) {
       if (error instanceof z.ZodError) {
         res.status(400).json({
           message: `Dados inválidos (${error.issues.length})`,

@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { formatPhoneNumber } from "../../utils/formatePhone";
 import { CreateClient } from "../../schemas/Client";
+import { formatCPF } from "../../utils/formateCpf";
 
 interface AddressInput {
   country?: string;
@@ -12,12 +13,17 @@ interface AddressInput {
 }
 
 interface UpdateClientInput {
-  id: number;
+  cpf: string;
   address?: AddressInput;
   email?: string;
   maritalStatus?: "SINGLE" | "MARRIED" | "DIVORCED" | "WIDOWED";
   name?: string;
   phones?: string[];
+}
+
+interface IndexClients {
+  name?: string;
+  cpf?: string;
 }
 
 const prisma = new PrismaClient();
@@ -30,9 +36,11 @@ const create = async ({
   name,
   phones,
 }: CreateClient) => {
+  const formateCpf = formatCPF(cpf);
+
   const client = await prisma.client.create({
     data: {
-      cpf,
+      cpf: formateCpf,
       email,
       maritalStatus,
       name,
@@ -57,7 +65,7 @@ const create = async ({
 };
 
 const update = async ({
-  id,
+  cpf,
   address,
   email,
   maritalStatus,
@@ -66,7 +74,7 @@ const update = async ({
 }: UpdateClientInput) => {
   const updatedClient = await prisma.client.update({
     where: {
-      id: id,
+      cpf: cpf,
     },
     data: {
       email: email,
@@ -95,6 +103,8 @@ const update = async ({
   });
   return updatedClient;
 };
+
+const index = async ({ name, cpf }: IndexClients) => {};
 
 const Client = {
   create,
