@@ -24,6 +24,7 @@ model Client {
   id            Int           @id @default(autoincrement())
   cpf           String        @unique
   email         String
+  name          String
   maritalStatus MaritalStatus
   address       Address?      @relation(fields: [addressId], references: [id])
   addressId     Int?          @unique

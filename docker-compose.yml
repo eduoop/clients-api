@@ -3,14 +3,14 @@ version: "3"
 services:
   postgres:
     image: "postgres:latest"
-    container_name: technical-test
+    container_name: clients-api
     restart: always
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: technical-test
+      POSTGRES_DB: clients-api
 
 volumes:
   .postgres-data:
