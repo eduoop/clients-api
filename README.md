@@ -107,7 +107,7 @@ A API estará disponível em \`http://localhost:3000\`.
       "street": "Rua Nova",
       "number": "128"
     },
-    "phones": ["(81) 3458-1720", "(74) 2492-6536"]
+    "phones": ["813458-1720", "(74) 2492-6536"]
   }
   ```
 
