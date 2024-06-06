@@ -40,7 +40,7 @@ npm i
 npx prisma generate
 ```
 
-## 5. Crie um \`.env\` na raiz do projeto e adicione a seguinte variável:
+## 5. Crie um arquivo \`.env\` na raiz do projeto e adicione a seguinte variável:
 
 ```
 DATABASE_URL="postgresql://postgres:password@localhost:5432"
